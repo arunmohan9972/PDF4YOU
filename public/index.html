@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>PDF4YOU | Online Word To PDF</title>
+  <link rel="icon" href="/logo.png">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar">
+
+    <div class="topbar-left">
+
+      <h1 class="topbar-logo">
+        PDF4YOU
+      </h1>
+
+    </div>
+
+    <div class="topbar-right">
+
+      <button class="auth-btn login-btn">
+        Login
+      </button>
+
+      <button class="auth-btn signup-btn">
+        Sign Up
+      </button>
+
+    </div>
+
+  </header>
+
+  <div class="container">
+
+    <h2 class="logo">Word to PDF</h2>
+
+    <form id="uploadForm">
+
+      <input type="file"
+             id="fileInput"
+             name="word"
+             accept=".docx"
+             style="display:none;" />
+
+      <div id="dropZone" class="upload-box">
+
+        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+
+        <p>Drag & Drop DOCX here</p>
+        <p>or click to select</p>
+
+      </div>
+
+      <p id="fileName"></p>
+
+      <button class="btn" type="submit">Convert to PDF</button>
+
+      <div id="loading" class="loading-box">
+        <div class="spinner"></div>
+        <p id="loadingText">Uploading...</p>
+      </div>
+
+      <progress id="progressBar" value="0" max="100"></progress>
+
+      <div id="success" class="success">✔ Converted Successfully</div>
+
+      <a id="downloadBtn" class="download-btn">Download PDF</a>
+
+    </form>
+
+  </div>
+
+<script>
+
+const dropZone = document.getElementById("dropZone");
+const fileInput = document.getElementById("fileInput");
+const fileName = document.getElementById("fileName");
+const form = document.getElementById("uploadForm");
+const progressBar = document.getElementById("progressBar");
+const loading = document.getElementById("loading");
+const loadingText = document.getElementById("loadingText");
+const success = document.getElementById("success");
+const downloadBtn = document.getElementById("downloadBtn");
+const submitBtn = document.querySelector(".btn");
+
+/* CLICK */
+dropZone.addEventListener("click", (e) => {
+  e.preventDefault();
+  fileInput.value = "";
+  fileInput.click();
+});
+
+dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropZone.classList.add("dragover");
+});
+
+dropZone.addEventListener("dragleave", () => {
+  dropZone.classList.remove("dragover");
+});
+
+dropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropZone.classList.remove("dragover");
+  fileInput.files = e.dataTransfer.files;
+  showFile();
+});
+
+fileInput.addEventListener("change", showFile);
+
+function showFile() {
+
+  const file = fileInput.files[0];
+
+  if (!file) return;
+
+  if (!file.name.toLowerCase().endsWith(".docx")) {
+    alert("Only DOCX files are allowed.");
+    fileInput.value = "";
+    fileName.innerHTML = "";
+    return;
+  }
+
+  const maxSize = 10 * 1024 * 1024;
+
+  if (file.size > maxSize) {
+    alert("File size must be below 10MB");
+    fileInput.value = "";
+    fileName.innerHTML = "";
+    return;
+  }
+
+  fileName.innerHTML = "<strong>Selected:</strong> " + file.name;
+  downloadBtn.style.display = "none";
+}
+
+/* SUBMIT */
+form.addEventListener("submit", function (e) {
+
+  e.preventDefault();
+
+  const file = fileInput.files[0];
+
+  if (!file) return alert("Please select a DOCX file");
+
+  submitBtn.disabled = true;
+  submitBtn.innerText = "Converting...";
+
+  const formData = new FormData();
+  formData.append("word", file);
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "/docxtopdf", true);
+  xhr.responseType = "blob";
+
+  loading.style.display = "flex";
+  progressBar.value = 0;
+  progressBar.style.display = "block";
+  success.style.display = "none";
+
+  dropZone.classList.add("uploading");
+
+  xhr.upload.onprogress = function (e) {
+    if (e.lengthComputable) {
+
+      let target = Math.round((e.loaded / e.total) * 100);
+      let current = progressBar.value || 0;
+
+      let animate = setInterval(() => {
+
+        if (current >= target) {
+          clearInterval(animate);
+          return;
+        }
+
+        current += 1;
+        progressBar.value = current;
+        loadingText.innerText = "Uploading... " + current + "%";
+
+      }, 10);
+    }
+  };
+
+  xhr.onload = function () {
+
+    loading.style.display = "none";
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Convert to PDF";
+
+    dropZone.classList.remove("uploading");
+
+    progressBar.style.display = "none";
+
+    const blob = xhr.response;
+
+    if (!(blob instanceof Blob)) {
+      return alert("Invalid response from server");
+    }
+
+    const pdfUrl = URL.createObjectURL(blob);
+    const originalName = file.name.replace(/\.docx$/i, ".pdf");
+
+    downloadBtn.href = pdfUrl;
+    downloadBtn.download = originalName;
+    downloadBtn.style.display = "inline-block";
+
+    success.style.display = "block";
+
+    setTimeout(() => success.style.display = "none", 2500);
+  };
+
+  xhr.onerror = function () {
+
+    loading.style.display = "none";
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Convert to PDF";
+
+    dropZone.classList.remove("uploading");
+
+    progressBar.style.display = "none";
+
+    alert("Network error. Please try again.");
+  };
+
+  xhr.send(formData);
+});
+
+</script>
+
+<footer class="trademark">
+  © 2026 PDF4YOU™ | All Rights Reserved
+</footer>
+
+</body>
+</html>
