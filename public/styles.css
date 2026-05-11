@@ -15,7 +15,6 @@ html {
 ========================= */
 
 body {
-
   margin: 0;
   padding: 0;
 
@@ -25,11 +24,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
 
   color: white;
 
@@ -43,7 +38,6 @@ body {
 ========================= */
 
 .topbar {
-
   position: fixed;
 
   top: 0;
@@ -51,7 +45,7 @@ body {
 
   width: 100%;
 
-  padding: 18px 28px;
+  padding: 9px 22px;
 
   display: flex;
 
@@ -63,41 +57,43 @@ body {
 
   background: rgba(15, 23, 42, 0.45);
 
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(18px);
 
   -webkit-backdrop-filter: blur(14px);
 
-  border-bottom: 2px solid rgba(0,0,0,0.55);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.55);
 
   box-shadow:
-    0 4px 18px rgba(0,0,0,0.35),
-    0 1px 0 rgba(255,255,255,0.04) inset;
+    0 4px 18px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
 }
 
 .topbar-logo {
-
   margin: 0;
 
-  font-size: 26px;
+  font-size: 40px;
 
-  font-family: "Inter", sans-serif;
+  letter-spacing: 2px;
 
-  font-weight: 800;
+  text-transform: uppercase;
 
-  letter-spacing: 1.5px;
+  font-family: "Kavoon", serif;
+  font-weight: 400;
+  font-style: normal;
 
-  background: linear-gradient(90deg, #00c6ff, #7c3aed);
+  background: linear-gradient(90deg, #ffffff, #cbd5e1);
 
   -webkit-background-clip: text;
-
   -webkit-text-fill-color: transparent;
 
+  -webkit-text-stroke: 1.5px black;
+
   text-shadow:
-    0 0 10px rgba(56,189,248,0.2);
+    0 0 10px rgba(255, 255, 255, 0.2),
+    0 0 25px rgba(56, 189, 248, 0.15);
 }
 
 .topbar-right {
-
   display: flex;
 
   align-items: center;
@@ -106,7 +102,6 @@ body {
 }
 
 .auth-btn {
-
   border: none;
 
   outline: none;
@@ -130,33 +125,29 @@ body {
 }
 
 .login-btn {
-
   color: white;
 
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .login-btn:hover {
-
   transform: translateY(-2px);
 
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .signup-btn {
-
   color: white;
 
   background: linear-gradient(135deg, #00c6ff, #0072ff);
 }
 
 .signup-btn:hover {
-
   transform: translateY(-2px);
 
-  box-shadow: 0 10px 20px rgba(0,114,255,0.35);
+  box-shadow: 0 10px 20px rgba(0, 114, 255, 0.35);
 }
 
 /* =========================
@@ -165,7 +156,6 @@ body {
 
 body::before,
 body::after {
-
   content: "";
 
   position: absolute;
@@ -181,13 +171,10 @@ body::after {
 
   pointer-events: none;
 
-  animation:
-    float 8s infinite
-    alternate ease-in-out;
+  animation: float 8s infinite alternate ease-in-out;
 }
 
 body::before {
-
   background: #00c6ff;
 
   top: -100px;
@@ -195,7 +182,6 @@ body::before {
 }
 
 body::after {
-
   background: #7c3aed;
 
   bottom: -100px;
@@ -203,9 +189,8 @@ body::after {
 }
 
 @keyframes float {
-
   0% {
-    transform: translate(0,0) scale(1);
+    transform: translate(0, 0) scale(1);
   }
 
   100% {
@@ -218,10 +203,9 @@ body::after {
 ========================= */
 
 .container {
-
   width: min(420px, 92%);
 
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 
   backdrop-filter: blur(20px);
 
@@ -233,9 +217,9 @@ body::after {
 
   text-align: center;
 
-  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   position: relative;
 
@@ -245,7 +229,6 @@ body::after {
 }
 
 @keyframes pop {
-
   from {
     transform: scale(0.8);
     opacity: 0;
@@ -262,7 +245,6 @@ body::after {
 ========================= */
 
 .logo {
-
   font-size: 36px;
 
   font-weight: 700;
@@ -281,10 +263,9 @@ body::after {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  text-shadow:
-    0 0 12px rgba(56,189,248,0.25);
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
 
-  filter: drop-shadow(0 0 6px rgba(56,189,248,0.15));
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.15));
 }
 
 /* =========================
@@ -292,10 +273,9 @@ body::after {
 ========================= */
 
 .upload-box {
-
   position: relative;
 
-  border: 2px dashed rgba(255,255,255,0.25);
+  border: 2px dashed rgba(255, 255, 255, 0.25);
 
   border-radius: 16px;
 
@@ -305,7 +285,7 @@ body::after {
 
   overflow: hidden;
 
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 
   backdrop-filter: blur(10px);
 
@@ -319,14 +299,13 @@ body::after {
 }
 
 .upload-box:hover {
-
   border-color: #38bdf8;
 
-  background: rgba(56,189,248,0.08);
+  background: rgba(56, 189, 248, 0.08);
 
   transform: translateY(-2px);
 
-  box-shadow: 0 10px 30px rgba(56,189,248,0.15);
+  box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
 }
 
 /* =========================
@@ -334,7 +313,6 @@ body::after {
 ========================= */
 
 #fileInput {
-
   position: absolute;
 
   inset: 0;
@@ -351,7 +329,6 @@ body::after {
 ========================= */
 
 .btn {
-
   width: 100%;
 
   margin-top: 15px;
@@ -374,10 +351,9 @@ body::after {
 }
 
 .btn:hover {
-
   transform: translateY(-3px);
 
-  box-shadow: 0 10px 25px rgba(0,114,255,0.4);
+  box-shadow: 0 10px 25px rgba(0, 114, 255, 0.4);
 }
 
 /* =========================
@@ -385,7 +361,6 @@ body::after {
 ========================= */
 
 #fileName {
-
   margin-top: 10px;
 
   font-size: 13px;
@@ -398,7 +373,6 @@ body::after {
 ========================= */
 
 .loading-box {
-
   display: none;
 
   margin-top: 15px;
@@ -415,12 +389,11 @@ body::after {
 ========================= */
 
 .spinner {
-
   width: 25px;
 
   height: 25px;
 
-  border: 3px solid rgba(255,255,255,0.2);
+  border: 3px solid rgba(255, 255, 255, 0.2);
 
   border-top: 3px solid #00c6ff;
 
@@ -430,7 +403,6 @@ body::after {
 }
 
 @keyframes spin {
-
   100% {
     transform: rotate(360deg);
   }
@@ -441,7 +413,6 @@ body::after {
 ========================= */
 
 progress {
-
   display: none;
 
   width: 100%;
@@ -462,7 +433,6 @@ progress {
 ========================= */
 
 .success {
-
   display: none;
 
   margin-top: 12px;
@@ -477,7 +447,6 @@ progress {
 ========================= */
 
 .download-btn {
-
   display: none;
 
   margin-top: 15px;
@@ -500,7 +469,6 @@ progress {
 ========================= */
 
 .trademark {
-
   position: fixed;
 
   bottom: 12px;
@@ -511,7 +479,7 @@ progress {
 
   font-size: 13px;
 
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* =========================
@@ -519,19 +487,15 @@ progress {
 ========================= */
 
 @media (max-width: 600px) {
-
   .topbar {
-
     padding: 14px 16px;
   }
 
   .topbar-logo {
-
     font-size: 20px;
   }
 
   .auth-btn {
-
     padding: 9px 14px;
 
     font-size: 13px;
@@ -539,9 +503,9 @@ progress {
 }
 
 @media (max-width: 480px) {
-
   .container {
     padding: 20px;
+
     border-radius: 14px;
   }
 
@@ -555,7 +519,6 @@ progress {
 ========================= */
 
 .upload-icon {
-
   font-size: 66px;
 
   color: #38bdf8;
@@ -574,18 +537,16 @@ progress {
 ========================= */
 
 .upload-box.uploading .upload-icon {
-
   animation: iconPulse 1s infinite ease-in-out;
 
   text-shadow:
-    0 0 8px rgba(56,189,248,0.35),
-    0 0 16px rgba(56,189,248,0.25);
+    0 0 8px rgba(56, 189, 248, 0.35),
+    0 0 16px rgba(56, 189, 248, 0.25);
 
-  filter: drop-shadow(0 0 6px rgba(56,189,248,0.25));
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.25));
 }
 
 @keyframes iconPulse {
-
   0% {
     transform: scale(1) translateY(0);
     opacity: 0.75;
@@ -599,5 +560,112 @@ progress {
   100% {
     transform: scale(1) translateY(0);
     opacity: 0.75;
+  }
+}
+
+/* =========================
+   MOBILE RESPONSIVE (MERGED CLEAN VERSION)
+========================= */
+
+@media (max-width: 600px) {
+
+  /* HEADER */
+  .topbar {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .topbar-logo {
+    font-size: 26px;
+    letter-spacing: 1px;
+    -webkit-text-stroke: 1px black;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .auth-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  /* CONTAINER */
+  .container {
+    width: 92%;
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  /* TITLE */
+  .logo {
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+
+  /* UPLOAD BOX */
+  .upload-box {
+    padding: 22px;
+  }
+
+  .upload-icon {
+    font-size: 48px;
+  }
+
+  /* BUTTON */
+  .btn {
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  /* TEXT */
+  #fileName {
+    font-size: 12px;
+  }
+
+  /* DOWNLOAD BUTTON */
+  .download-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  /* FOOTER */
+  .trademark {
+    font-size: 11px;
+    bottom: 8px;
+  }
+}
+
+/* =========================
+   EXTRA SMALL SCREENS
+========================= */
+
+@media (max-width: 400px) {
+
+  .topbar-logo {
+    font-size: 22px;
+  }
+
+  .auth-btn {
+    font-size: 11px;
+    padding: 7px 9px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .upload-box {
+    padding: 18px;
+  }
+
+  .upload-icon {
+    font-size: 42px;
+  }
+
+  .btn {
+    font-size: 13px;
   }
 }
