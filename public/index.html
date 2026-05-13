@@ -7,23 +7,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>PDF4YOU | Online Word To PDF</title>
+
   <link rel="icon" href="/logo.png">
 
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Kavoon&display=swap"
-        rel="stylesheet">  <!-- New Font Header -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 
-  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap"
-        rel="stylesheet">
+  <link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
 
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet">
+      
   <link rel="stylesheet" href="/styles.css">
 
 </head>
@@ -34,15 +41,10 @@
   <header class="topbar">
 
     <div class="topbar-left">
-
-      <h1 class="topbar-logo">
-        PDF4YOU
-      </h1>
-
+      <h1 class="topbar-logo">PDF4YOU</h1>
     </div>
 
     <div class="topbar-right">
-
       <button class="auth-btn login-btn">
         Login
       </button>
@@ -50,47 +52,68 @@
       <button class="auth-btn signup-btn">
         Sign Up
       </button>
-
     </div>
 
   </header>
 
+  <!-- MAIN CONTAINER -->
   <div class="container">
 
     <h2 class="logo">Word to PDF</h2>
 
     <form id="uploadForm">
 
+      <!-- HIDDEN FILE INPUT -->
       <input type="file"
              id="fileInput"
              name="word"
              accept=".docx"
              style="display:none;" />
 
+      <!-- DROP ZONE -->
       <div id="dropZone" class="upload-box">
 
         <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
 
-        <p>Drag & Drop DOCX here</p>
+        <p>Drag & Drop DOCX file here</p>
+
         <p>or click to select</p>
 
+        <p class="sub-text">Max size: 10MB</p>
+
       </div>
 
+      <!-- FILE NAME -->
       <p id="fileName"></p>
 
-      <button class="btn" type="submit">Convert to PDF</button>
+      <!-- SUBMIT BUTTON -->
+      <button class="btn" type="submit">
+        Convert to PDF
+      </button>
 
+      <!-- LOADING -->
       <div id="loading" class="loading-box">
+
         <div class="spinner"></div>
-        <p id="loadingText">Uploading...</p>
+
+        <p id="loadingText">
+          Uploading...
+        </p>
+
       </div>
 
-      <progress id="progressBar" value="0" max="100"></progress>
+      <!-- PROGRESS -->
+      <progress id="progressBar"
+                value="0"
+                max="100">
+      </progress>
 
+      <!-- SUCCESS MESSAGE -->
       <div id="success" class="success">
         ✔ Converted Successfully
       </div>
 
+      <!-- DOWNLOAD BUTTON -->
       <a id="downloadBtn" class="download-btn">
         Download PDF
       </a>
@@ -99,6 +122,7 @@
 
   </div>
 
+  <!-- FOOTER -->
   <footer class="trademark">
     © 2026 PDF4YOU™ | All Rights Reserved
   </footer>
