@@ -1,0 +1,25 @@
+{
+  "name": "word_pdf-main",
+  "version": "1.0.0",
+  "description": "The Word to PDF Converter is a web application built using Express.js that allows users to convert Microsoft Word documents (.docx) to PDF format.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "docx-pdf": "^0.0.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.1",
+    "helmet": "^8.1.0",
+    "libreoffice-convert": "^1.8.1",
+    "multer": "^2.1.1"
+  }
+}
