@@ -14,31 +14,44 @@ const rateLimit = require("express-rate-limit");
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 /* =========================
    SECURITY
 ========================= */
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        upgradeInsecureRequests: null
+      }
+    }
+  })
+);
 
 app.use(cors());
 
 app.use(compression());
 
-/* RATE LIMITING */
+/* =========================
+   RATE LIMITING
+========================= */
 
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 30
+    max: 1000
   })
 );
 
-/* STATIC FILES + CACHE */
+/* =========================
+   STATIC FILES
+========================= */
 
 app.use(
-  express.static("public", {
+  express.static(path.join(__dirname, "public"), {
     maxAge: "1d"
   })
 );
@@ -48,8 +61,6 @@ app.use(
 ========================= */
 
 const upload = multer({
-
-  /* USE SYSTEM TEMP DIRECTORY */
   dest: os.tmpdir(),
 
   limits: {
@@ -58,12 +69,10 @@ const upload = multer({
 
   fileFilter: (req, file, cb) => {
 
-    /* MIME VALIDATION */
     const allowedMime =
       file.mimetype ===
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-    /* EXTENSION VALIDATION */
     const allowedExt =
       path.extname(file.originalname).toLowerCase() === ".docx";
 
@@ -76,102 +85,88 @@ const upload = multer({
 });
 
 /* =========================
+   HEALTH CHECK
+========================= */
+
+app.get("/health", (req, res) => {
+  res.json({
+    status: "online",
+    service: "PDF4YOU"
+  });
+});
+
+/* =========================
    DOCX → PDF
 ========================= */
 
-app.post(
-  "/docxtopdf",
-  upload.single("word"),
-  (req, res) => {
+app.post("/docxtopdf", upload.single("word"), (req, res) => {
 
-    if (!req.file) {
-      return res.status(400).send("No file uploaded");
-    }
+  if (!req.file) {
+    return res.status(400).send("No file uploaded");
+  }
 
-    const inputPath = req.file.path;
+  const inputPath = req.file.path;
 
-    const outputPath = path.join(
-      os.tmpdir(),
-      `${Date.now()}.pdf`
+  const outputPath = path.join(
+    os.tmpdir(),
+    `${Date.now()}.pdf`
+  );
+
+  res.on("finish", cleanup);
+  res.on("close", cleanup);
+
+  try {
+
+    const fileBuffer = fs.readFileSync(inputPath);
+
+    libre.convert(
+      fileBuffer,
+      ".pdf",
+      undefined,
+      (err, done) => {
+
+        if (err) {
+
+          console.error("LibreOffice conversion error:", err);
+
+          cleanup();
+
+          return res.status(500).send("Conversion failed");
+        }
+
+        fs.writeFileSync(outputPath, done);
+
+        res.download(outputPath, "converted.pdf");
+      }
     );
 
-    /* CLEANUP EVENTS */
+  } catch (err) {
 
-    res.on("finish", cleanup);
-    res.on("close", cleanup);
+    console.error("Server error:", err);
+
+    cleanup();
+
+    return res.status(500).send("Server error");
+  }
+
+  function cleanup() {
 
     try {
 
-      const fileBuffer =
-        fs.readFileSync(inputPath);
-
-      libre.convert(
-        fileBuffer,
-        ".pdf",
-        undefined,
-
-        (err, done) => {
-
-          if (err) {
-
-            console.error(
-              "LibreOffice conversion error:",
-              err
-            );
-
-            cleanup();
-
-            return res
-              .status(500)
-              .send("Conversion failed");
-          }
-
-          fs.writeFileSync(outputPath, done);
-
-          res.download(
-            outputPath,
-            "converted.pdf"
-          );
-        }
-      );
-
-    } catch (err) {
-
-      console.error("Server error:", err);
-
-      cleanup();
-
-      return res
-        .status(500)
-        .send("Server error");
-    }
-
-    /* =========================
-       CLEANUP FILES
-    ========================= */
-
-    function cleanup() {
-
-      try {
-
-        if (fs.existsSync(inputPath)) {
-          fs.unlinkSync(inputPath);
-        }
-
-        if (fs.existsSync(outputPath)) {
-          fs.unlinkSync(outputPath);
-        }
-
-      } catch (e) {
-
-        console.error(
-          "Cleanup error:",
-          e
-        );
+      if (fs.existsSync(inputPath)) {
+        fs.unlinkSync(inputPath);
       }
+
+      if (fs.existsSync(outputPath)) {
+        fs.unlinkSync(outputPath);
+      }
+
+    } catch (e) {
+
+      console.error("Cleanup error:", e);
     }
   }
-);
+});
 
 /* =========================
    ERROR HANDLER
@@ -182,20 +177,14 @@ app.use((err, req, res, next) => {
   console.error(err);
 
   if (err.message === "Only DOCX allowed") {
-    return res
-      .status(400)
-      .send("Only DOCX files allowed");
+    return res.status(400).send("Only DOCX files allowed");
   }
 
   if (err.code === "LIMIT_FILE_SIZE") {
-    return res
-      .status(400)
-      .send("File too large");
+    return res.status(400).send("File too large");
   }
 
-  res
-    .status(500)
-    .send("Server Error");
+  res.status(500).send("Server Error");
 });
 
 /* =========================
@@ -204,8 +193,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
 
-  console.log(
-    `Server running on http://localhost:${PORT}`
-  );
+  console.log(`Server running on http://localhost:${PORT}`);
 
 });
